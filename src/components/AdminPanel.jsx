@@ -875,6 +875,17 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-end">
                   <div className="space-y-2">
+                    <label className="text-sm font-black uppercase tracking-widest text-slate-400">Calificación (1-5)</label>
+                    <input value={formData.rating} onChange={e=>setFormData({...formData, rating: e.target.value})} type="number" min="1" max="5" step="0.1" className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 border-2 border-transparent focus:border-blue-500 rounded-2xl outline-none transition-all font-bold shadow-inner"/>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-black uppercase tracking-widest text-slate-400">Cantidad de Reseñas</label>
+                    <input value={formData.ratingCount} onChange={e=>setFormData({...formData, ratingCount: e.target.value})} type="number" className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 border-2 border-transparent focus:border-blue-500 rounded-2xl outline-none transition-all font-bold shadow-inner"/>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-end">
+                  <div className="space-y-2">
                     <label className="text-sm font-black uppercase tracking-widest text-slate-400">Archivo Instalador</label>
                     <div className="bg-slate-50 dark:bg-slate-900 h-[76px] px-6 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-blue-500 transition-all cursor-pointer flex items-center">
                       <label className="flex items-center gap-4 cursor-pointer w-full">
@@ -1113,6 +1124,7 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
                 <tr className="border-b border-slate-100 dark:border-slate-700">
                   <th className="pb-4 px-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Fecha</th>
                   <th className="pb-4 px-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Usuario</th>
+                  <th className="pb-4 px-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Dispositivo</th>
                   <th className="pb-4 px-4 text-[10px] font-black uppercase tracking-widest text-slate-400">IP</th>
                   <th className="pb-4 px-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Ubicación</th>
                   <th className="pb-4 px-4 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Acción</th>
@@ -1125,6 +1137,12 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
                     <tr key={log.id} className="border-b border-slate-50 dark:border-slate-800">
                       <td className="py-4 px-4 text-xs font-bold text-slate-500">{formatToPeruDate(log.timestamp)}</td>
                       <td className="py-4 px-4 text-xs text-slate-700 dark:text-slate-300">{log.userEmail}</td>
+                      <td className="py-4 px-4">
+                        <div className="flex items-center gap-2 text-xs text-slate-500">
+                          <Smartphone size={14} className="text-slate-400" />
+                          <span className="font-bold truncate max-w-[120px]" title={log.userAgent}>{log.deviceType || 'Desconocido'}</span>
+                        </div>
+                      </td>
                       <td className="py-4 px-4 text-xs font-mono text-blue-600">{log.ip}</td>
                       <td className="py-4 px-4 text-xs text-slate-500">{log.city}, {log.country}</td>
                       <td className="py-4 px-4 text-right">
