@@ -552,7 +552,7 @@ const AuthView = ({ allowedType, onBack, setUser, gatekeeperEnabled, showToast }
               </button>
 
               <div className="pt-6 text-center">
-                {allowedType === 'client' && (
+                {(allowedType === 'client' || gatekeeperEnabled === false) && (
                   <button onClick={()=>{setIsLogin(!isLogin); setError('');}} className="text-primary-600 text-xs font-black uppercase tracking-widest hover:text-primary-700 underline underline-offset-8 decoration-primary-200 decoration-2 transition-all">
                     {isLogin ? '¿No tienes cuenta? Crea una aquí' : '¿Ya tienes cuenta? Inicia Sesión'}
                   </button>
