@@ -46,6 +46,7 @@ function App() {
   const [editingProduct, setEditingProduct] = useState(null);
   const [previewProduct, setPreviewProduct] = useState(null);
   const [selectedLibraryProduct, setSelectedLibraryProduct] = useState(null);
+  const [adminTab, setAdminTab] = useState('products');
   const isAdmin = checkIsAdmin(user);
 
   // Manejo de navegación con el botón de retroceso del navegador
@@ -53,6 +54,7 @@ function App() {
     const handlePopState = (event) => {
       if (event.state) {
         setActiveTab(event.state.tab || 'store');
+        if (event.state.adminTab) setAdminTab(event.state.adminTab);
         
         // Vista de tienda
         if (event.state.productId) {
@@ -80,7 +82,7 @@ function App() {
     
     // Estado inicial
     if (!window.history.state) {
-      window.history.replaceState({ tab: 'store', productId: null, libraryProductId: null }, '');
+      window.history.replaceState({ tab: 'store', productId: null, libraryProductId: null, adminTab: 'products' }, '');
     }
 
     return () => window.removeEventListener('popstate', handlePopState);
@@ -90,7 +92,12 @@ function App() {
     setActiveTab(tab);
     setPreviewProduct(null);
     setSelectedLibraryProduct(null);
-    window.history.pushState({ tab, productId: null, libraryProductId: null }, '');
+    window.history.pushState({ tab, productId: null, libraryProductId: null, adminTab }, '');
+  };
+
+  const handleAdminTabChange = (tab) => {
+    setAdminTab(tab);
+    window.history.pushState({ tab: 'admin', productId: null, libraryProductId: null, adminTab: tab }, '');
   };
 
   const handlePreviewProduct = (product) => {
@@ -490,7 +497,7 @@ function App() {
       <main className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 sm:py-8">
         {activeTab === 'store' && <StoreView products={products} banners={banners} isAdmin={isAdmin} purchases={purchases} setCheckoutProduct={setCheckoutProduct} setActiveTab={handleTabChange} setEditingProduct={setEditingProduct} isLoading={isLoading} previewProduct={previewProduct} setPreviewProduct={handlePreviewProduct} allReviews={allReviews} />}
         {activeTab === 'library' && <LibraryView products={products} purchases={purchases} setActiveTab={handleTabChange} showToast={showToast} allReviews={allReviews} user={user} selectedProduct={selectedLibraryProduct} setSelectedProduct={handleLibraryProductSelect} />}
-        {activeTab === 'admin' && <AdminPanel products={products} banners={banners} showToast={showToast} editingProduct={editingProduct} setEditingProduct={setEditingProduct} setPreviewProduct={handlePreviewProduct} setActiveTab={handleTabChange} user={user} />}
+        {activeTab === 'admin' && <AdminPanel products={products} banners={banners} showToast={showToast} editingProduct={editingProduct} setEditingProduct={setEditingProduct} setPreviewProduct={handlePreviewProduct} setActiveTab={handleTabChange} user={user} adminTab={adminTab} setAdminTab={handleAdminTabChange} />}
       </main>
       <CheckoutModal checkoutProduct={checkoutProduct} setCheckoutProduct={setCheckoutProduct} user={user} showToast={showToast} setActiveTab={handleTabChange} purchases={purchases} />
       <Toast toast={toast} />

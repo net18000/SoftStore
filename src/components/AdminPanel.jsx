@@ -12,7 +12,7 @@ import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebas
 import { db, storage, secureAdminAction, formatToPeruDate, formatToPeruTime } from '../utils';
 import { appId, EMAILJS_CONFIG, MANUAL_PAYMENT_CONFIG } from '../config';
 
-const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingProduct, setPreviewProduct, setActiveTab, user }) => {
+const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingProduct, setPreviewProduct, setActiveTab, user, adminTab, setAdminTab }) => {
   const [formData, setFormData] = useState({ 
     title: '', 
     description: '', 
@@ -41,7 +41,6 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
   const [allReviews, setAllReviews] = useState([]);
   const [visitorLogs, setVisitorLogs] = useState([]);
   const [blockedIPs, setBlockedIPs] = useState([]);
-  const [adminTab, setAdminTab] = useState('products');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [gatekeeperConfig, setGatekeeperConfig] = useState({ frequencyMinutes: 30, enabled: true });
 
