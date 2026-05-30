@@ -4,13 +4,18 @@ import {
   ChevronLeft, ChevronRight, Search, Zap, 
   CheckCircle, ShieldCheck, Download, AlertCircle, ShoppingCart, Settings
 } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router-dom';
 import ProductCard from './ProductCard';
 import ProductDetails from './ProductDetails';
 
-const StoreView = ({ products, banners, isAdmin, purchases, setCheckoutProduct, setActiveTab, setEditingProduct, isLoading, previewProduct, setPreviewProduct, allReviews }) => {
+const StoreView = ({ products, banners, isAdmin, purchases, setCheckoutProduct, setEditingProduct, isLoading, allReviews }) => {
+  const { productId } = useParams();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentBanner, setCurrentBanner] = useState(0);
   const activeBanners = banners.filter(b => b.active && b.position === 'top');
+
+  const previewProduct = products.find(p => p.id === productId);
 
   useEffect(() => {
     if (activeBanners.length <= 1) return;
@@ -35,11 +40,11 @@ const StoreView = ({ products, banners, isAdmin, purchases, setCheckoutProduct, 
     return (
       <ProductDetails 
         previewProduct={previewProduct}
-        onBack={() => setPreviewProduct(null)}
+        onBack={() => navigate('/productos')}
         isAdmin={isAdmin}
         hasPurchased={hasPurchased}
         setCheckoutProduct={setCheckoutProduct}
-        setActiveTab={setActiveTab}
+        setActiveTab={(tab) => navigate(tab === 'admin' ? '/admin/productos' : tab === 'library' ? '/biblioteca' : '/productos')}
         setEditingProduct={setEditingProduct}
         reviews={reviews}
         avgRating={avgRating}
@@ -170,7 +175,7 @@ const StoreView = ({ products, banners, isAdmin, purchases, setCheckoutProduct, 
                 product={p} 
                 isPurchased={isPurchased(p.id)} 
                 onBuy={setCheckoutProduct}
-                onPreview={setPreviewProduct}
+                onPreview={(product) => navigate(`/productos/${product.id}`)}
               />
             ))}
           </div>

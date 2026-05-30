@@ -4,19 +4,20 @@ import {
   MessageSquare, ChevronRight, HardDrive, Info, 
   Search, ShieldCheck, Clock, CheckCircle, X
 } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { collection, addDoc, doc, updateDoc, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../utils';
 import { appId } from '../config';
 
-const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews, user, selectedProduct, setSelectedProduct }) => {
+const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews, user }) => {
+  const { productId } = useParams();
+  const navigate = useNavigate();
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const hasAlreadyReviewed = (productId) => {
-    return allReviews.some(r => r.productId === productId && r.userId === user.uid);
-  };
+  const selectedProduct = products.find(p => p.id === productId);
 
   const purchasedProducts = products.filter(product => 
     purchases.some(purchase => purchase.productId === product.id && purchase.status === 'completed')
@@ -30,6 +31,8 @@ const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews,
   const pendingProducts = products.filter(product => 
     pendingPurchases.some(p => p.productId === product.id)
   );
+
+  const hasAlreadyReviewed = (id) => allReviews.some(r => r.productId === id && r.userId === user?.uid);
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -61,7 +64,7 @@ const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews,
       }
       
       setReviewComment('');
-      setSelectedProduct(null);
+      navigate('/biblioteca');
     } catch (error) {
       console.error(error);
       showToast("Error al enviar la reseña. Inténtalo de nuevo.", "error");
@@ -73,7 +76,7 @@ const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews,
   if (selectedProduct) {
     return (
       <div className="max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-700">
-        <button onClick={() => setSelectedProduct(null)} className="mb-8 flex items-center gap-3 text-slate-400 hover:text-primary-600 font-black text-xs uppercase tracking-[0.2em] group transition-all">
+        <button onClick={() => navigate('/biblioteca')} className="mb-8 flex items-center gap-3 text-slate-400 hover:text-primary-600 font-black text-xs uppercase tracking-[0.2em] group transition-all">
           <ChevronRight size={20} className="rotate-180 group-hover:-translate-x-1 transition-transform" /> Volver a mis programas
         </button>
 
@@ -215,9 +218,9 @@ const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews,
           <button onClick={() => setActiveTab('store')} className="mt-10 bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black px-12 py-5 rounded-2xl shadow-2xl transition-all hover:scale-105 active:scale-95 uppercase tracking-widest text-xs">Ir a la Tienda</button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredLibrary.map(product => (
-            <div key={product.id} className="group bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 border border-slate-100 dark:border-slate-800 hover:shadow-2xl transition-all flex flex-col h-full">
+            <div key={product.id} onClick={() => navigate(`/biblioteca/${product.id}`)} className="group bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all cursor-pointer flex flex-col h-full">
               <div className="relative aspect-square mb-6 rounded-3xl overflow-hidden bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 group-hover:scale-[1.02] transition-transform duration-500">
                 {product.imageUrl ? (
                   <img src={product.imageUrl} alt={product.title} draggable="false" className="w-full h-full object-cover pointer-events-none" />
@@ -225,9 +228,9 @@ const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews,
                   <div className="w-full h-full flex items-center justify-center text-slate-200"><Package size={48} /></div>
                 )}
                 <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-6">
-                  <button onClick={() => setSelectedProduct(product)} className="w-full bg-white text-slate-900 font-black py-3 rounded-xl flex items-center justify-center gap-2 shadow-xl uppercase tracking-widest text-[10px]">
+                  <div className="w-full bg-white text-slate-900 font-black py-3 rounded-xl flex items-center justify-center gap-2 shadow-xl uppercase tracking-widest text-[10px]">
                     <ExternalLink size={16} /> Gestionar
-                  </button>
+                  </div>
                 </div>
               </div>
               <div className="flex-1 flex flex-col">

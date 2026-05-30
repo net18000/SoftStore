@@ -8,6 +8,7 @@ import {
   doc, onSnapshot, collection, query, where, 
   getDocs, addDoc, updateDoc 
 } from 'firebase/firestore';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 
 import { auth, db, checkIsAdmin, formatToPeruDate } from './utils';
 import { appId, ADMIN_EMAILS } from './config';
@@ -39,89 +40,28 @@ function App() {
   const [purchases, setPurchases] = useState([]);
   const [allReviews, setAllReviews] = useState([]);
   const [userProfile, setUserProfile] = useState(null);
-  const [activeTab, setActiveTab] = useState('store');
   const [isLoading, setIsLoading] = useState(true);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
   const [checkoutProduct, setCheckoutProduct] = useState(null);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [previewProduct, setPreviewProduct] = useState(null);
-  const [selectedLibraryProduct, setSelectedLibraryProduct] = useState(null);
-  const [adminTab, setAdminTab] = useState('products');
   const isAdmin = checkIsAdmin(user);
+  
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  // Manejo de navegación con el botón de retroceso del navegador
-  useEffect(() => {
-    const handlePopState = (event) => {
-      if (event.state) {
-        setActiveTab(event.state.tab || 'store');
-        if (event.state.adminTab) setAdminTab(event.state.adminTab);
-        
-        // Vista de tienda
-        if (event.state.productId) {
-          const product = products.find(p => p.id === event.state.productId);
-          if (product) setPreviewProduct(product);
-        } else {
-          setPreviewProduct(null);
-        }
-
-        // Vista de biblioteca
-        if (event.state.libraryProductId) {
-          const product = products.find(p => p.id === event.state.libraryProductId);
-          if (product) setSelectedLibraryProduct(product);
-        } else {
-          setSelectedLibraryProduct(null);
-        }
-      } else {
-        setActiveTab('store');
-        setPreviewProduct(null);
-        setSelectedLibraryProduct(null);
-      }
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    
-    // Estado inicial
-    if (!window.history.state) {
-      window.history.replaceState({ tab: 'store', productId: null, libraryProductId: null, adminTab: 'products' }, '');
-    }
-
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [products]);
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    setPreviewProduct(null);
-    setSelectedLibraryProduct(null);
-    window.history.pushState({ tab, productId: null, libraryProductId: null, adminTab }, '');
+  const getActiveTab = () => {
+    if (location.pathname.startsWith('/admin')) return 'admin';
+    if (location.pathname.startsWith('/biblioteca')) return 'library';
+    if (location.pathname.startsWith('/productos')) return 'store';
+    return 'store';
   };
 
-  const handleAdminPreview = (product) => {
-    setActiveTab('store');
-    setPreviewProduct(product);
-    window.history.pushState({ tab: 'store', productId: product.id, libraryProductId: null, adminTab }, '');
-  };
+  const activeTab = getActiveTab();
 
-  const handleAdminTabChange = (tab) => {
-    setAdminTab(tab);
-    window.history.pushState({ tab: 'admin', productId: null, libraryProductId: null, adminTab: tab }, '');
-  };
-
-  const handlePreviewProduct = (product) => {
-    setPreviewProduct(product);
-    if (product) {
-      window.history.pushState({ tab: activeTab, productId: product.id, libraryProductId: null }, '');
-    } else {
-      window.history.pushState({ tab: activeTab, productId: null, libraryProductId: null }, '');
-    }
-  };
-
-  const handleLibraryProductSelect = (product) => {
-    setSelectedLibraryProduct(product);
-    if (product) {
-      window.history.pushState({ tab: activeTab, productId: null, libraryProductId: product.id }, '');
-    } else {
-      window.history.pushState({ tab: activeTab, productId: null, libraryProductId: null }, '');
-    }
+  const handleSignOut = async () => {
+    setIsSigningOut(true);
+    await signOut(auth);
+    navigate('/productos');
   };
 
   useEffect(() => {
@@ -463,20 +403,20 @@ function App() {
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">
             {!isAdmin && (
-              <button onClick={() => handleTabChange('store')} className={`px-4 py-2.5 rounded-2xl text-sm font-black transition-all flex items-center gap-2 ${activeTab === 'store' ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/20' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
+              <button onClick={() => navigate('/productos')} className={`px-4 py-2.5 rounded-2xl text-sm font-black transition-all flex items-center gap-2 ${activeTab === 'store' ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/20' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
                 <Monitor size={18} />
                 <span className="hidden sm:inline">Tienda</span>
               </button>
             )}
             {!isAdmin && (
-              <button onClick={() => handleTabChange('library')} className={`px-4 py-2.5 rounded-2xl text-sm font-black flex items-center gap-2 transition-all ${activeTab === 'library' ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/20' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
+              <button onClick={() => navigate('/biblioteca')} className={`px-4 py-2.5 rounded-2xl text-sm font-black flex items-center gap-2 transition-all ${activeTab === 'library' ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/20' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
                 <HardDrive size={18} />
                 <span className="hidden sm:inline">Mis Programas</span>
                 {purchases.length > 0 && <span className="bg-white text-primary-600 text-[10px] px-1.5 py-0.5 rounded-full min-w-[18px] text-center font-black">{purchases.length}</span>}
               </button>
             )}
             {isAdmin && (
-              <button onClick={() => handleTabChange('admin')} className={`px-4 py-2.5 rounded-2xl text-sm font-black flex items-center gap-2 transition-all ${activeTab === 'admin' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-xl' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
+              <button onClick={() => navigate('/admin/productos')} className={`px-4 py-2.5 rounded-2xl text-sm font-black flex items-center gap-2 transition-all ${activeTab === 'admin' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-xl' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
                 <Settings size={18} />
                 <span className="hidden sm:inline">Admin</span>
               </button>
@@ -486,7 +426,7 @@ function App() {
                 {isAdmin && <span className="text-[9px] font-black uppercase tracking-[0.2em] text-primary-500 leading-tight mb-0.5">Admin Access</span>}
                 <span className="text-xs font-black text-slate-800 dark:text-slate-100 truncate max-w-[150px] leading-tight">{userProfile?.fullName || user?.email?.split('@')[0]}</span>
               </div>
-              <button onClick={() => signOut(auth)} className="text-slate-400 hover:text-red-500 p-2.5 rounded-2xl hover:bg-red-50 dark:hover:bg-red-900/10 transition-all border border-transparent hover:border-red-100 dark:hover:border-red-900/20"><LogOut size={22} /></button>
+              <button onClick={handleSignOut} className="text-slate-400 hover:text-red-500 p-2.5 rounded-2xl hover:bg-red-50 dark:hover:bg-red-900/10 transition-all border border-transparent hover:border-red-100 dark:hover:border-red-900/20"><LogOut size={22} /></button>
             </div>
           </div>
         </div>
@@ -501,11 +441,21 @@ function App() {
       )}
 
       <main className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 sm:py-8">
-        {activeTab === 'store' && <StoreView products={products} banners={banners} isAdmin={isAdmin} purchases={purchases} setCheckoutProduct={setCheckoutProduct} setActiveTab={handleTabChange} setEditingProduct={setEditingProduct} isLoading={isLoading} previewProduct={previewProduct} setPreviewProduct={handlePreviewProduct} allReviews={allReviews} />}
-        {activeTab === 'library' && <LibraryView products={products} purchases={purchases} setActiveTab={handleTabChange} showToast={showToast} allReviews={allReviews} user={user} selectedProduct={selectedLibraryProduct} setSelectedProduct={handleLibraryProductSelect} />}
-        {activeTab === 'admin' && <AdminPanel products={products} banners={banners} showToast={showToast} editingProduct={editingProduct} setEditingProduct={setEditingProduct} setPreviewProduct={handleAdminPreview} setActiveTab={handleTabChange} user={user} adminTab={adminTab} setAdminTab={handleAdminTabChange} />}
+        <Routes>
+          <Route path="/" element={<Navigate to="/productos" />} />
+          <Route path="/productos" element={<StoreView products={products} banners={banners} isAdmin={isAdmin} purchases={purchases} setCheckoutProduct={setCheckoutProduct} setEditingProduct={setEditingProduct} isLoading={isLoading} allReviews={allReviews} />} />
+          <Route path="/productos/:productId" element={<StoreView products={products} banners={banners} isAdmin={isAdmin} purchases={purchases} setCheckoutProduct={setCheckoutProduct} setEditingProduct={setEditingProduct} isLoading={isLoading} allReviews={allReviews} />} />
+          
+          <Route path="/biblioteca" element={<LibraryView products={products} purchases={purchases} showToast={showToast} allReviews={allReviews} user={user} />} />
+          <Route path="/biblioteca/:productId" element={<LibraryView products={products} purchases={purchases} showToast={showToast} allReviews={allReviews} user={user} />} />
+
+          <Route path="/admin" element={isAdmin ? <Navigate to="/admin/productos" /> : <Navigate to="/" />} />
+          <Route path="/admin/:tab" element={isAdmin ? <AdminPanel products={products} banners={banners} showToast={showToast} editingProduct={editingProduct} setEditingProduct={setEditingProduct} user={user} /> : <Navigate to="/" />} />
+          
+          <Route path="*" element={<Navigate to="/productos" />} />
+        </Routes>
       </main>
-      <CheckoutModal checkoutProduct={checkoutProduct} setCheckoutProduct={setCheckoutProduct} user={user} showToast={showToast} setActiveTab={handleTabChange} purchases={purchases} />
+      <CheckoutModal checkoutProduct={checkoutProduct} setCheckoutProduct={setCheckoutProduct} user={user} showToast={showToast} purchases={purchases} setActiveTab={(tab) => navigate(tab === 'library' ? '/biblioteca' : '/productos')} />
       <Toast toast={toast} />
     </div>
   );

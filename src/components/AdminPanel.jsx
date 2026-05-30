@@ -8,11 +8,16 @@ import {
   collection, onSnapshot, addDoc, deleteDoc, doc, updateDoc, 
   query, where, getDocs, writeBatch, getDoc, setDoc 
 } from 'firebase/firestore';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage, secureAdminAction, formatToPeruDate, formatToPeruTime } from '../utils';
 import { appId, EMAILJS_CONFIG, MANUAL_PAYMENT_CONFIG } from '../config';
 
-const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingProduct, setPreviewProduct, setActiveTab, user, adminTab, setAdminTab }) => {
+const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingProduct, setPreviewProduct, setActiveTab, user }) => {
+  const { tab: adminTab = 'productos' } = useParams();
+  const navigate = useNavigate();
+  const setAdminTab = (newTab) => navigate(`/admin/${newTab}`);
+  
   const [formData, setFormData] = useState({ 
     title: '', 
     description: '', 
@@ -286,7 +291,7 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
   };
 
   useEffect(() => {
-    if (adminTab !== 'visitors') return;
+    if (adminTab !== 'visitas') return;
     const logsRef = collection(db, 'artifacts', appId, 'public', 'data', 'visitorLogs');
     const unsubscribe = onSnapshot(logsRef, (snapshot) => {
       const loadedLogs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -675,15 +680,15 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
       </div>
 
       <div className="flex gap-2 sm:gap-4 p-1 bg-slate-200 dark:bg-slate-800 w-full sm:w-fit rounded-xl overflow-x-auto whitespace-nowrap scrollbar-hide">
-        <button onClick={() => { setAdminTab('products'); setIsFormOpen(false); setEditingProduct(null); setIsBannerFormOpen(false); }} className={`px-4 sm:px-6 py-2 rounded-lg font-bold transition-all text-sm sm:text-base ${adminTab === 'products' ? 'bg-white dark:bg-slate-700 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Productos</button>
+        <button onClick={() => { setAdminTab('productos'); setIsFormOpen(false); setEditingProduct(null); setIsBannerFormOpen(false); }} className={`px-4 sm:px-6 py-2 rounded-lg font-bold transition-all text-sm sm:text-base ${adminTab === 'productos' ? 'bg-white dark:bg-slate-700 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Productos</button>
         <button onClick={() => { setAdminTab('banners'); setIsFormOpen(false); setEditingProduct(null); setIsBannerFormOpen(false); }} className={`px-4 sm:px-6 py-2 rounded-lg font-bold transition-all text-sm sm:text-base ${adminTab === 'banners' ? 'bg-white dark:bg-slate-700 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Banners</button>
-        <button onClick={() => { setAdminTab('orders'); setIsFormOpen(false); setEditingProduct(null); setIsBannerFormOpen(false); }} className={`px-4 sm:px-6 py-2 rounded-lg font-bold transition-all flex items-center gap-2 text-sm sm:text-base ${adminTab === 'orders' ? 'bg-white dark:bg-slate-700 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
+        <button onClick={() => { setAdminTab('pedidos'); setIsFormOpen(false); setEditingProduct(null); setIsBannerFormOpen(false); }} className={`px-4 sm:px-6 py-2 rounded-lg font-bold transition-all flex items-center gap-2 text-sm sm:text-base ${adminTab === 'pedidos' ? 'bg-white dark:bg-slate-700 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
           Pedidos {allOrders.filter(o => o.status === 'pending').length > 0 && <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full animate-pulse">{allOrders.filter(o => o.status === 'pending').length}</span>}
         </button>
-        <button onClick={() => { setAdminTab('reviews'); setIsFormOpen(false); setEditingProduct(null); setIsBannerFormOpen(false); }} className={`px-4 sm:px-6 py-2 rounded-lg font-bold transition-all text-sm sm:text-base ${adminTab === 'reviews' ? 'bg-white dark:bg-slate-700 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Reseñas</button>
-        <button onClick={() => { setAdminTab('clients'); setIsFormOpen(false); setEditingProduct(null); setIsBannerFormOpen(false); }} className={`px-4 sm:px-6 py-2 rounded-lg font-bold transition-all text-sm sm:text-base ${adminTab === 'clients' ? 'bg-white dark:bg-slate-700 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Clientes</button>
-        <button onClick={() => { setAdminTab('visitors'); setIsFormOpen(false); setEditingProduct(null); setIsBannerFormOpen(false); }} className={`px-4 sm:px-6 py-2 rounded-lg font-bold transition-all text-sm sm:text-base ${adminTab === 'visitors' ? 'bg-white dark:bg-slate-700 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Visitas</button>
-        <button onClick={() => { setAdminTab('security'); setIsFormOpen(false); setEditingProduct(null); setIsBannerFormOpen(false); }} className={`px-4 sm:px-6 py-2 rounded-lg font-bold transition-all text-sm sm:text-base ${adminTab === 'security' ? 'bg-white dark:bg-slate-700 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Seguridad</button>
+        <button onClick={() => { setAdminTab('resenas'); setIsFormOpen(false); setEditingProduct(null); setIsBannerFormOpen(false); }} className={`px-4 sm:px-6 py-2 rounded-lg font-bold transition-all text-sm sm:text-base ${adminTab === 'resenas' ? 'bg-white dark:bg-slate-700 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Reseñas</button>
+        <button onClick={() => { setAdminTab('clientes'); setIsFormOpen(false); setEditingProduct(null); setIsBannerFormOpen(false); }} className={`px-4 sm:px-6 py-2 rounded-lg font-bold transition-all text-sm sm:text-base ${adminTab === 'clientes' ? 'bg-white dark:bg-slate-700 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Clientes</button>
+        <button onClick={() => { setAdminTab('visitas'); setIsFormOpen(false); setEditingProduct(null); setIsBannerFormOpen(false); }} className={`px-4 sm:px-6 py-2 rounded-lg font-bold transition-all text-sm sm:text-base ${adminTab === 'visitas' ? 'bg-white dark:bg-slate-700 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Visitas</button>
+        <button onClick={() => { setAdminTab('configuracion'); setIsFormOpen(false); setEditingProduct(null); setIsBannerFormOpen(false); }} className={`px-4 sm:px-6 py-2 rounded-lg font-bold transition-all text-sm sm:text-base ${adminTab === 'configuracion' ? 'bg-white dark:bg-slate-700 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>Seguridad</button>
       </div>
 
       {adminTab === 'banners' && (
@@ -826,7 +831,7 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
         </div>
       )}
 
-      {adminTab === 'products' && (
+      {adminTab === 'productos' && (
         <div className="space-y-8">
           {isFormOpen ? (
             <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-700 animate-in fade-in zoom-in duration-300">
@@ -988,7 +993,7 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
         </div>
       )}
 
-      {adminTab === 'orders' && (
+      {adminTab === 'pedidos' && (
         <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">
           <h2 className="text-2xl font-black text-slate-800 dark:text-white mb-8 flex items-center gap-2"><FileText size={24} /> Pedidos Recibidos</h2>
           <div className="overflow-x-auto">
@@ -1028,7 +1033,7 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
         </div>
       )}
 
-      {adminTab === 'reviews' && (
+      {adminTab === 'resenas' && (
         <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">
           <h2 className="text-2xl font-black text-slate-800 dark:text-white mb-8 flex items-center gap-2"><Star size={24} /> Reseñas de Clientes</h2>
           <div className="overflow-x-auto">
@@ -1081,7 +1086,7 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
         </div>
       )}
 
-      {adminTab === 'clients' && (
+      {adminTab === 'clientes' && (
         <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">
           <h2 className="text-2xl font-black text-slate-800 dark:text-white mb-8 flex items-center gap-2"><Users size={24} /> Directorio de Clientes</h2>
           <div className="overflow-x-auto">
@@ -1127,7 +1132,7 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
         </div>
       )}
 
-      {adminTab === 'visitors' && (
+      {adminTab === 'visitas' && (
         <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-black text-slate-800 dark:text-white flex items-center gap-2"><Globe size={24} /> Visitas</h2>
@@ -1174,7 +1179,7 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
         </div>
       )}
 
-      {adminTab === 'security' && (
+      {adminTab === 'configuracion' && (
         <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 max-w-2xl mx-auto">
           <h2 className="text-2xl font-black text-slate-800 dark:text-white mb-8 flex items-center gap-2"><Lock size={24} /> Seguridad</h2>
           <div className="space-y-8">
