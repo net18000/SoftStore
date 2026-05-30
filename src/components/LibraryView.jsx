@@ -9,7 +9,7 @@ import { collection, addDoc, doc, updateDoc, getDocs, query, where } from 'fireb
 import { db } from '../utils';
 import { appId } from '../config';
 
-const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews, user }) => {
+const LibraryView = ({ products, purchases, showToast, allReviews, user }) => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const [reviewRating, setReviewRating] = useState(5);
@@ -215,7 +215,7 @@ const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews,
           </div>
           <h3 className="text-3xl font-black text-slate-800 dark:text-white mb-3 italic">Tu biblioteca está vacía</h3>
           <p className="text-slate-400 font-medium max-w-xs mx-auto">Aún no has adquirido ningún software. ¡Explora nuestra tienda y comienza hoy!</p>
-          <button onClick={() => setActiveTab('store')} className="mt-10 bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black px-12 py-5 rounded-2xl shadow-2xl transition-all hover:scale-105 active:scale-95 uppercase tracking-widest text-xs">Ir a la Tienda</button>
+          <button onClick={() => navigate('/productos')} className="mt-10 bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black px-12 py-5 rounded-2xl shadow-2xl transition-all hover:scale-105 active:scale-95 uppercase tracking-widest text-xs">Ir a la Tienda</button>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

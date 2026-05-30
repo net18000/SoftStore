@@ -280,15 +280,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (user && isAdmin && activeTab === 'store' && !previewProduct) {
-      setActiveTab('admin');
-    }
-    if (user && !isAdmin && activeTab === 'admin') {
-      setActiveTab('store');
-    }
-  }, [user, isAdmin, activeTab, previewProduct]);
-
-  useEffect(() => {
     if (!user) return;
     const productsRef = collection(db, 'artifacts', appId, 'public', 'data', 'products');
     const unsubscribeProducts = onSnapshot(productsRef, (snapshot) => {

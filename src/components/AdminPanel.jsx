@@ -13,7 +13,7 @@ import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebas
 import { db, storage, secureAdminAction, formatToPeruDate, formatToPeruTime } from '../utils';
 import { appId, EMAILJS_CONFIG, MANUAL_PAYMENT_CONFIG } from '../config';
 
-const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingProduct, setPreviewProduct, setActiveTab, user }) => {
+const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingProduct, user }) => {
   const { tab: adminTab = 'productos' } = useParams();
   const navigate = useNavigate();
   const setAdminTab = (newTab) => navigate(`/admin/${newTab}`);
@@ -972,7 +972,7 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {products.map(p => (
                   <div key={p.id} className="group bg-slate-50 dark:bg-slate-900/50 rounded-[2rem] border border-slate-100 dark:border-slate-800 p-6 transition-all hover:shadow-2xl">
-                    <div onClick={() => setPreviewProduct(p)} className="relative aspect-square bg-white dark:bg-slate-800 rounded-2xl overflow-hidden mb-6 border border-slate-100 dark:border-slate-700 shadow-sm cursor-pointer z-10">
+                    <div onClick={() => navigate(`/productos/${p.id}`)} className="relative aspect-square bg-white dark:bg-slate-800 rounded-2xl overflow-hidden mb-6 border border-slate-100 dark:border-slate-700 shadow-sm cursor-pointer z-10">
                       {p.imageUrl ? <img src={p.imageUrl} draggable="false" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 pointer-events-none"/> : <Package size={48} className="text-slate-200 absolute inset-0 m-auto pointer-events-none" />}
                     </div>
                     <div className="space-y-4">
