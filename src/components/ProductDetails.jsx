@@ -158,7 +158,8 @@ const ProductDetails = ({ previewProduct, onBack, isAdmin, hasPurchased, setChec
           </div>
         </div>
       </div>
-    );
+    </div>
+  );
 };
 
 export default ProductDetails;
