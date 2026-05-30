@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoftStore</title>
+  
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- Quill.js for advanced text editing -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+</head>
+<body>
+  <!-- Initial Loader -->
+  <div id="initial-loader">
+    <div class="spinner"></div>
+    <p>Cargando SoftStore...</p>
+  </div>
+
+  <div id="root"></div>
+
+  <!-- Vite Entry Point -->
+  <script type="module" src="/src/main.jsx"></script>
+
+  <script>
+    // Remove initial loader when React is ready
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loader = document.getElementById('initial-loader');
+        if (loader) {
+          loader.style.opacity = '0';
+          loader.style.transition = 'opacity 0.5s ease';
+          setTimeout(() => loader.remove(), 500);
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
