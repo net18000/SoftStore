@@ -1002,6 +1002,105 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
         </div>
       )}
 
+      {adminTab === 'reviews' && (
+        <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">
+          <h2 className="text-2xl font-black text-slate-800 dark:text-white mb-8 flex items-center gap-2"><Star size={24} /> Reseñas de Clientes</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="border-b border-slate-100 dark:border-slate-800">
+                  <th className="pb-4 text-[10px] font-black uppercase tracking-wider text-slate-400">Fecha</th>
+                  <th className="pb-4 text-[10px] font-black uppercase tracking-wider text-slate-400">Cliente / Producto</th>
+                  <th className="pb-4 text-[10px] font-black uppercase tracking-wider text-slate-400">Calificación</th>
+                  <th className="pb-4 text-[10px] font-black uppercase tracking-wider text-slate-400">Comentario</th>
+                  <th className="pb-4 text-[10px] font-black uppercase tracking-wider text-slate-400">Estado</th>
+                  <th className="pb-4 text-[10px] font-black uppercase tracking-wider text-slate-400">Acción</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50 dark:divide-slate-800">
+                {allReviews.map(review => (
+                  <tr key={review.id}>
+                    <td className="py-4 pr-4"><p className="font-bold text-slate-500 text-[10px] uppercase">{formatToPeruDate(review.createdAt)}</p></td>
+                    <td className="py-4 pr-4">
+                      <p className="font-bold text-slate-800 dark:text-white text-sm">{review.userName}</p>
+                      <p className="text-xs text-slate-400 truncate max-w-[200px]">{review.productTitle}</p>
+                    </td>
+                    <td className="py-4 pr-4">
+                      <div className="flex items-center gap-1 text-amber-400">
+                        <Star size={14} fill="currentColor" />
+                        <span className="font-black text-sm">{review.rating}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 pr-4">
+                      <p className="text-xs text-slate-600 dark:text-slate-400 max-w-[300px] line-clamp-2">{review.comment}</p>
+                    </td>
+                    <td className="py-4 pr-4">
+                      <span className={`text-[10px] font-black uppercase px-2 py-1 rounded-md ${review.isVisible !== false ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
+                        {review.isVisible !== false ? 'Visible' : 'Oculto'}
+                      </span>
+                    </td>
+                    <td className="py-4">
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => handleToggleReviewVisibility(review)} className="p-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-600 hover:text-white transition-all">
+                          {review.isVisible !== false ? <Lock size={16} /> : <Unlock size={16} />}
+                        </button>
+                        <button onClick={() => handleDeleteReview(review)} className="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all"><Trash2 size={16} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {adminTab === 'clients' && (
+        <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">
+          <h2 className="text-2xl font-black text-slate-800 dark:text-white mb-8 flex items-center gap-2"><Users size={24} /> Directorio de Clientes</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="border-b border-slate-100 dark:border-slate-800">
+                  <th className="pb-4 text-[10px] font-black uppercase tracking-wider text-slate-400">Registro</th>
+                  <th className="pb-4 text-[10px] font-black uppercase tracking-wider text-slate-400">Nombre Completo</th>
+                  <th className="pb-4 text-[10px] font-black uppercase tracking-wider text-slate-400">Email / UID</th>
+                  <th className="pb-4 text-[10px] font-black uppercase tracking-wider text-slate-400">Estado</th>
+                  <th className="pb-4 text-[10px] font-black uppercase tracking-wider text-slate-400">Acción</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50 dark:divide-slate-800">
+                {allClients.map(client => (
+                  <tr key={client.id}>
+                    <td className="py-4 pr-4"><p className="font-bold text-slate-500 text-[10px] uppercase">{formatToPeruDate(client.createdAt)}</p></td>
+                    <td className="py-4 pr-4">
+                      <p className="font-bold text-slate-800 dark:text-white text-sm">{client.fullName}</p>
+                    </td>
+                    <td className="py-4 pr-4">
+                      <p className="text-xs text-slate-600 dark:text-slate-400">{client.email || 'Sin email'}</p>
+                      <p className="text-[10px] text-slate-400 font-mono">{client.uid}</p>
+                    </td>
+                    <td className="py-4 pr-4">
+                      <span className={`text-[10px] font-black uppercase px-2 py-1 rounded-md ${client.status !== 'disabled' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
+                        {client.status !== 'disabled' ? 'Activo' : 'Inhabilitado'}
+                      </span>
+                    </td>
+                    <td className="py-4">
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => handleToggleClientStatus(client)} className={`p-2 rounded-lg transition-all ${client.status !== 'disabled' ? 'bg-amber-50 text-amber-600 hover:bg-amber-600 hover:text-white' : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white'}`}>
+                          {client.status !== 'disabled' ? <Lock size={16} /> : <Unlock size={16} />}
+                        </button>
+                        <button onClick={() => handleDeleteClient(client)} className="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all"><Trash2 size={16} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
       {adminTab === 'visitors' && (
         <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">
           <div className="flex justify-between items-center mb-8">
