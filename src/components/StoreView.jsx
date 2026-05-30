@@ -179,11 +179,11 @@ const StoreView = ({ products, banners, isAdmin, purchases, setCheckoutProduct, 
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 text-center">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Versión</p>
-                <p className="text-sm font-black text-slate-800 dark:text-white italic">2024 Stable</p>
+                <p className="text-sm font-black text-slate-800 dark:text-white italic">Estable</p>
               </div>
               <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 text-center">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Soporte</p>
-                <p className="text-sm font-black text-slate-800 dark:text-white italic">24/7 VIP</p>
+                <p className="text-sm font-black text-slate-800 dark:text-white italic">Videos instructivos</p>
               </div>
               <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 text-center">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Licencia</p>
@@ -294,6 +294,31 @@ const StoreView = ({ products, banners, isAdmin, purchases, setCheckoutProduct, 
 
   return (
     <div className="space-y-12">
+      <div className="bg-gradient-to-br from-slate-900 to-blue-900 rounded-[4rem] p-12 md:p-20 text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+        <div className="relative z-10 space-y-8 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.3em]">
+            <ShieldCheck size={16} className="text-blue-400" /> Sistema de Entrega Instantánea
+          </div>
+          <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-tight italic">
+            Potencia tu <span className="text-blue-400">creatividad</span> hoy mismo
+          </h2>
+          <p className="text-xl text-blue-100/80 font-bold leading-relaxed">
+            Accede a las mejores herramientas profesionales con un solo pago.
+          </p>
+          <div className="flex flex-wrap justify-center gap-10 pt-8 border-t border-white/10">
+            <div className="text-center">
+              <p className="text-4xl font-black text-white italic">100%</p>
+              <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Seguro</p>
+            </div>
+            <div className="text-center">
+              <p className="text-4xl font-black text-white italic">Auto</p>
+              <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Descarga</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {activeBanners.length > 0 && (
         <div className="relative h-[300px] sm:h-[450px] rounded-[3.5rem] overflow-hidden shadow-2xl border-4 border-white dark:border-slate-800 group">
           {activeBanners.map((banner, index) => (
@@ -397,35 +422,6 @@ const StoreView = ({ products, banners, isAdmin, purchases, setCheckoutProduct, 
             ))}
           </div>
         )}
-      </div>
-
-      <div className="bg-gradient-to-br from-slate-900 to-blue-900 rounded-[4rem] p-12 md:p-20 text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-        <div className="relative z-10 space-y-8 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.3em]">
-            <ShieldCheck size={16} className="text-blue-400" /> Sistema de Entrega Instantánea
-          </div>
-          <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-tight italic">
-            Potencia tu <span className="text-blue-400">creatividad</span> hoy mismo
-          </h2>
-          <p className="text-xl text-blue-100/80 font-bold leading-relaxed">
-            Accede a las mejores herramientas profesionales con un solo pago y soporte garantizado de por vida.
-          </p>
-          <div className="flex flex-wrap justify-center gap-10 pt-8 border-t border-white/10">
-            <div className="text-center">
-              <p className="text-4xl font-black text-white italic">100%</p>
-              <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Seguro</p>
-            </div>
-            <div className="text-center">
-              <p className="text-4xl font-black text-white italic">24/7</p>
-              <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Soporte</p>
-            </div>
-            <div className="text-center">
-              <p className="text-4xl font-black text-white italic">Auto</p>
-              <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Descarga</p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
