@@ -3,15 +3,10 @@ import {
   Monitor, Package, Star, ArrowRight, Clock, 
   ChevronLeft, Zap, CheckCircle, ShieldCheck, Download, ShoppingCart, Settings
 } from 'lucide-react';
-import { formatToPeruDate } from '../utils';
+import { formatToPeruDate, isOfferActive } from '../utils';
 import CountdownTimer from './CountdownTimer';
 
 const ProductDetails = ({ previewProduct, onBack, isAdmin, hasPurchased, setCheckoutProduct, setActiveTab, setEditingProduct, reviews, avgRating }) => {
-  const isOfferActive = (p) => {
-    if (!p.hasOffer) return false;
-    if (!p.offerExpiresAt) return true;
-    return new Date(p.offerExpiresAt) > new Date();
-  };
   const hasOffer = isOfferActive(previewProduct);
   const price = hasOffer ? previewProduct.offerPrice : previewProduct.price;
 

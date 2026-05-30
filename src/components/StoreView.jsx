@@ -64,7 +64,7 @@ const StoreView = ({ products, banners, isAdmin, purchases, setCheckoutProduct, 
             Potencia tu <span className="text-blue-400">emisora</span> hoy mismo
           </h2>
           <p className="text-xl text-blue-100/80 font-bold leading-relaxed">
-            Accede a las mejores herramientas profesionales con un solo pago.
+            Accede a las mejores herramientas profesionales.
           </p>
           <div className="flex flex-wrap justify-center gap-10 pt-8 border-t border-white/10">
             <div className="text-center">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, CreditCard, Smartphone, Landmark, ChevronRight, CheckCircle, AlertCircle, Lock, Package } from 'lucide-react';
 import { doc, getDoc, setDoc, collection, writeBatch } from 'firebase/firestore';
-import { db } from '../utils';
+import { db, isOfferActive } from '../utils';
 import { appId, MANUAL_PAYMENT_CONFIG } from '../config';
 import PayPalButton from './PayPalButton';
 
@@ -11,12 +11,6 @@ const CheckoutModal = ({ checkoutProduct, setCheckoutProduct, user, showToast, s
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [isSubmittingManual, setIsSubmittingManual] = useState(false);
-
-  const isOfferActive = (product) => {
-    if (!product.hasOffer) return false;
-    if (!product.offerExpiresAt) return true;
-    return new Date(product.offerExpiresAt) > new Date();
-  };
 
   const alreadyPurchased = purchases.some(p => p.productId === checkoutProduct.id && p.status === 'completed');
 

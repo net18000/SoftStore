@@ -8,6 +8,8 @@ import {
   collection, onSnapshot, addDoc, deleteDoc, doc, updateDoc, 
   query, where, getDocs, writeBatch, getDoc, setDoc 
 } from 'firebase/firestore';
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage, secureAdminAction, formatToPeruDate, formatToPeruTime } from '../utils';

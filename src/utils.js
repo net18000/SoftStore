@@ -46,6 +46,12 @@ export const getFriendlyErrorMessage = (error) => {
 
 export const checkIsAdmin = (u) => u && ADMIN_EMAILS.includes(u.email);
 
+export const isOfferActive = (product) => {
+  if (!product?.hasOffer) return false;
+  if (!product.offerExpiresAt) return true;
+  return new Date(product.offerExpiresAt) > new Date();
+};
+
 export const secureAction = (user, callback) => {
   if (!user) {
     alert("Debes iniciar sesión para realizar esta acción.");

@@ -15,6 +15,7 @@ import {
   doc, getDoc, setDoc, updateDoc, deleteDoc, 
   collection, query, where, getDocs, addDoc 
 } from 'firebase/firestore';
+import emailjs from '@emailjs/browser';
 import { auth, db, getFriendlyErrorMessage } from '../utils';
 import { appId, ADMIN_EMAILS, EMAILJS_CONFIG } from '../config';
 

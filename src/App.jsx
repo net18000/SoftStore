@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Package, Monitor, HardDrive, Settings, LogOut, 
-  Shield, ShieldCheck, ArrowRight, Monitor as MonitorIcon
+  Package, Monitor, HardDrive, Settings, LogOut, Shield 
 } from 'lucide-react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { 
@@ -10,10 +9,9 @@ import {
 } from 'firebase/firestore';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 
-import { auth, db, checkIsAdmin, formatToPeruDate } from './utils';
+import { auth, db, checkIsAdmin } from './utils';
 import { appId, ADMIN_EMAILS } from './config';
 
-import ErrorBoundary from './components/ErrorBoundary';
 import Toast from './components/Toast';
 import GatekeeperView from './components/GatekeeperView';
 import AuthView from './components/AuthView';
