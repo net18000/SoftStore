@@ -68,7 +68,7 @@ const ProductCard = ({ product, isPurchased, onBuy, onPreview }) => {
                 <CheckCircle size={14} /> Adquirido
               </div>
             ) : (
-              <button onClick={() => onBuy(product)} className="bg-slate-900 dark:bg-white dark:text-slate-900 text-white px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl hover:scale-105 active:scale-95 transition-all flex items-center gap-2 group/btn">
+              <button onClick={() => onPreview(product)} className="bg-slate-900 dark:bg-white dark:text-slate-900 text-white px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl hover:scale-105 active:scale-95 transition-all flex items-center gap-2 group/btn">
                 <ShoppingCart size={16} className="group-hover/btn:rotate-12 transition-transform" /> Comprar
               </button>
             )}
