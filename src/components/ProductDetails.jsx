@@ -101,7 +101,7 @@ const ProductDetails = ({ previewProduct, onBack, isAdmin, hasPurchased, setChec
                 </button>
               )}
               {isAdmin && (
-                <button onClick={() => { setEditingProduct(previewProduct); setActiveTab('admin'); onBack(); }} className="w-full bg-blue-50 dark:bg-blue-900/10 hover:bg-blue-600 hover:text-white text-blue-600 font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-4 uppercase tracking-[0.2em] text-[10px] group border-2 border-dashed border-blue-200 dark:border-blue-800">
+                <button onClick={() => { setEditingProduct(previewProduct); setActiveTab('admin'); }} className="w-full bg-blue-50 dark:bg-blue-900/10 hover:bg-blue-600 hover:text-white text-blue-600 font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-4 uppercase tracking-[0.2em] text-[10px] group border-2 border-dashed border-blue-200 dark:border-blue-800">
                   <Settings size={18} className="group-hover:rotate-12 transition-transform" /> Modo Administrador: Editar Programa
                 </button>
               )}
