@@ -800,7 +800,7 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
                   {banners.map(banner => (
                     <div key={banner.id} className="group bg-slate-50 dark:bg-slate-900/50 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 flex flex-col md:flex-row gap-6 items-center">
                       <div className="w-full md:w-64 h-32 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shrink-0">
-                        <img src={banner.imageUrl} className="w-full h-full object-cover" />
+                        <img src={banner.imageUrl} draggable="false" className="w-full h-full object-cover pointer-events-none" />
                       </div>
                       <div className="flex-1 space-y-2 text-center md:text-left">
                         <h3 className="text-xl font-black text-slate-800 dark:text-white">{banner.title}</h3>
@@ -953,7 +953,7 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
                 {products.map(p => (
                   <div key={p.id} className="group bg-slate-50 dark:bg-slate-900/50 rounded-[2rem] border border-slate-100 dark:border-slate-800 p-6 transition-all hover:shadow-2xl">
                     <div onClick={() => { setPreviewProduct(p); setActiveTab('store'); }} className="relative aspect-square bg-white dark:bg-slate-800 rounded-2xl overflow-hidden mb-6 border border-slate-100 dark:border-slate-700 shadow-sm cursor-pointer">
-                      {p.imageUrl ? <img src={p.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"/> : <Package size={48} className="text-slate-200 absolute inset-0 m-auto" />}
+                      {p.imageUrl ? <img src={p.imageUrl} draggable="false" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 pointer-events-none"/> : <Package size={48} className="text-slate-200 absolute inset-0 m-auto" />}
                     </div>
                     <div className="space-y-4">
                       <h3 className="font-black text-lg text-slate-800 dark:text-white line-clamp-1">{p.title}</h3>

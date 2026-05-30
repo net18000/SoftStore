@@ -64,7 +64,12 @@ const ProductCard = ({ product, isPurchased, onBuy, onPreview, isAdmin, onEdit }
       
       <div className="relative aspect-square mb-6 rounded-3xl overflow-hidden bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 shadow-inner group-hover:scale-[1.02] transition-transform duration-500">
         {product.imageUrl ? (
-          <img src={product.imageUrl} alt={product.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <img 
+            src={product.imageUrl} 
+            alt={product.title} 
+            draggable="false"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 pointer-events-none" 
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-slate-200"><Package size={64} /></div>
         )}
@@ -163,7 +168,11 @@ const StoreView = ({ products, banners, isAdmin, purchases, setCheckoutProduct, 
           <div className="space-y-8 sticky top-32">
             <div className="relative aspect-square bg-white dark:bg-slate-900 rounded-[3.5rem] overflow-hidden shadow-2xl border border-slate-100 dark:border-slate-800 p-8 flex items-center justify-center">
               {previewProduct.imageUrl ? (
-                <img src={previewProduct.imageUrl} className="w-full h-full object-contain hover:scale-105 transition-transform duration-700" />
+                <img 
+                  src={previewProduct.imageUrl} 
+                  draggable="false"
+                  className="w-full h-full object-contain hover:scale-105 transition-transform duration-700 pointer-events-none" 
+                />
               ) : (
                 <Package size={120} className="text-slate-100" />
               )}

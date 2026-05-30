@@ -83,7 +83,7 @@ const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews,
             <div className="flex flex-col md:flex-row gap-10 items-center md:items-start">
               <div className="w-48 h-48 bg-slate-50 dark:bg-slate-800 rounded-[2.5rem] p-6 flex items-center justify-center border border-slate-100 dark:border-slate-800 shadow-inner shrink-0">
                 {selectedProduct.imageUrl ? (
-                  <img src={selectedProduct.imageUrl} className="w-full h-full object-contain" />
+                  <img src={selectedProduct.imageUrl} draggable="false" className="w-full h-full object-contain pointer-events-none" />
                 ) : (
                   <Package size={64} className="text-slate-200" />
                 )}
@@ -221,7 +221,7 @@ const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews,
             <div key={product.id} className="group bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 border border-slate-100 dark:border-slate-800 hover:shadow-2xl transition-all flex flex-col h-full">
               <div className="relative aspect-square mb-6 rounded-3xl overflow-hidden bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 group-hover:scale-[1.02] transition-transform duration-500">
                 {product.imageUrl ? (
-                  <img src={product.imageUrl} alt={product.title} className="w-full h-full object-cover" />
+                  <img src={product.imageUrl} alt={product.title} draggable="false" className="w-full h-full object-cover pointer-events-none" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-slate-200"><Package size={48} /></div>
                 )}
