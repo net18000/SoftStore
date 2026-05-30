@@ -1140,7 +1140,7 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-2 text-xs text-slate-500">
                           <Smartphone size={14} className="text-slate-400" />
-                          <span className="font-bold truncate max-w-[120px]" title={log.userAgent}>{log.deviceType || 'Desconocido'}</span>
+                          <span className="font-bold truncate max-w-[120px]" title={log.device}>{log.deviceType || log.device || 'Desconocido'}</span>
                         </div>
                       </td>
                       <td className="py-4 px-4 text-xs font-mono text-blue-600">{log.ip}</td>
