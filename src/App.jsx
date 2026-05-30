@@ -340,7 +340,7 @@ function App() {
   }, [user]);
 
   useEffect(() => {
-    if (user && isAdmin && (location.pathname === '/' || location.pathname === '/productos')) {
+    if (user && isAdmin && location.pathname === '/') {
       navigate('/admin/productos');
     }
   }, [user, isAdmin, location.pathname, navigate]);
@@ -413,10 +413,16 @@ function App() {
               </button>
             )}
             {isAdmin && (
-              <button onClick={() => navigate('/admin/productos')} className={`px-4 py-2.5 rounded-2xl text-sm font-black flex items-center gap-2 transition-all ${activeTab === 'admin' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-xl' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
-                <Settings size={18} />
-                <span className="hidden sm:inline">Admin</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => navigate('/productos')} className={`px-4 py-2.5 rounded-2xl text-sm font-black flex items-center gap-2 transition-all ${activeTab === 'store' ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/20' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
+                  <Monitor size={18} />
+                  <span className="hidden sm:inline">Ver Tienda</span>
+                </button>
+                <button onClick={() => navigate('/admin/productos')} className={`px-4 py-2.5 rounded-2xl text-sm font-black flex items-center gap-2 transition-all ${activeTab === 'admin' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-xl' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
+                  <Settings size={18} />
+                  <span className="hidden sm:inline">Admin</span>
+                </button>
+              </div>
             )}
             <div className="flex items-center gap-2 sm:gap-4 ml-2 sm:ml-4 pl-4 sm:pl-4 border-l border-slate-200 dark:border-slate-800">
               <div className="hidden md:flex flex-col items-end">
