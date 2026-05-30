@@ -6,7 +6,7 @@ import {
 import { formatToPeruDate } from '../utils';
 import CountdownTimer from './CountdownTimer';
 
-const ProductDetails = ({ previewProduct, onBack, isAdmin, hasPurchased, setCheckoutProduct, setActiveTab, reviews, avgRating }) => {
+const ProductDetails = ({ previewProduct, onBack, isAdmin, hasPurchased, setCheckoutProduct, setActiveTab, setEditingProduct, reviews, avgRating }) => {
   const isOfferActive = (p) => {
     if (!p.hasOffer) return false;
     if (!p.offerExpiresAt) return true;
