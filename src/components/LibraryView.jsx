@@ -15,6 +15,10 @@ const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews,
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const hasAlreadyReviewed = (productId) => {
+    return allReviews.some(r => r.productId === productId && r.userId === user.uid);
+  };
+
   const purchasedProducts = products.filter(product => 
     purchases.some(purchase => purchase.productId === product.id && purchase.status === 'completed')
   );
@@ -111,31 +115,45 @@ const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews,
                 <h3 className="text-xl font-black text-slate-800 dark:text-white uppercase tracking-tighter flex items-center gap-3 italic">
                   <MessageSquare size={24} className="text-primary-600" /> Tu Experiencia
                 </h3>
-                <form onSubmit={handleReviewSubmit} className="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] border-2 border-primary-50 dark:border-primary-900/20 space-y-6 shadow-sm">
-                  <div className="space-y-3">
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Calificación</p>
-                    <div className="flex gap-2 bg-slate-50 dark:bg-slate-900 p-3 rounded-2xl w-fit">
-                      {[1, 2, 3, 4, 5].map(star => (
-                        <button key={star} type="button" onClick={() => setReviewRating(star)} className="transition-transform hover:scale-125">
-                          <Star size={24} className={`${star <= reviewRating ? 'text-amber-400 fill-amber-400' : 'text-slate-200 dark:text-slate-700'}`} />
-                        </button>
-                      ))}
+                {hasAlreadyReviewed(selectedProduct.id) ? (
+                  <div className="bg-emerald-50 dark:bg-emerald-900/20 p-8 rounded-[2.5rem] border-2 border-emerald-100 dark:border-emerald-800 text-center space-y-4 shadow-sm animate-in fade-in zoom-in duration-500">
+                    <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-800 rounded-2xl flex items-center justify-center mx-auto text-emerald-600 dark:text-emerald-400">
+                      <Star size={32} fill="currentColor" />
+                    </div>
+                    <div className="space-y-2">
+                      <p className="font-black text-slate-800 dark:text-white text-lg italic">¡Ya has calificado este software!</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                        Tu opinión es muy valiosa para nosotros. Solo se permite una reseña por producto para mantener la integridad del sistema.
+                      </p>
                     </div>
                   </div>
-                  <div className="space-y-3">
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Tu comentario</p>
-                    <textarea 
-                      required
-                      value={reviewComment}
-                      onChange={e => setReviewComment(e.target.value)}
-                      placeholder="¿Cómo fue tu experiencia con el programa?"
-                      className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 border-2 border-transparent focus:border-primary-500 rounded-2xl outline-none transition-all font-medium text-sm min-h-[120px] resize-none dark:text-white"
-                    />
-                  </div>
-                  <button disabled={isSubmittingReview} type="submit" className="w-full bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black py-4 rounded-xl shadow-xl transition-all uppercase tracking-widest text-[10px]">
-                    {isSubmittingReview ? 'Enviando...' : 'Publicar Reseña'}
-                  </button>
-                </form>
+                ) : (
+                  <form onSubmit={handleReviewSubmit} className="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] border-2 border-primary-50 dark:border-primary-900/20 space-y-6 shadow-sm">
+                    <div className="space-y-3">
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Calificación</p>
+                      <div className="flex gap-2 bg-slate-50 dark:bg-slate-900 p-3 rounded-2xl w-fit">
+                        {[1, 2, 3, 4, 5].map(star => (
+                          <button key={star} type="button" onClick={() => setReviewRating(star)} className="transition-transform hover:scale-125">
+                            <Star size={24} className={`${star <= reviewRating ? 'text-amber-400 fill-amber-400' : 'text-slate-200 dark:text-slate-700'}`} />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Tu comentario</p>
+                      <textarea 
+                        required
+                        value={reviewComment}
+                        onChange={e => setReviewComment(e.target.value)}
+                        placeholder="¿Cómo fue tu experiencia con el programa?"
+                        className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 border-2 border-transparent focus:border-primary-500 rounded-2xl outline-none transition-all font-medium text-sm min-h-[120px] resize-none dark:text-white"
+                      />
+                    </div>
+                    <button disabled={isSubmittingReview} type="submit" className="w-full bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black py-4 rounded-xl shadow-xl transition-all uppercase tracking-widest text-[10px]">
+                      {isSubmittingReview ? 'Enviando...' : 'Publicar Reseña'}
+                    </button>
+                  </form>
+                )}
               </div>
             </div>
           </div>

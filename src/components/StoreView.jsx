@@ -301,7 +301,7 @@ const StoreView = ({ products, banners, isAdmin, purchases, setCheckoutProduct, 
             <ShieldCheck size={16} className="text-blue-400" /> Sistema de Entrega Instantánea
           </div>
           <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-tight italic">
-            Potencia tu <span className="text-blue-400">creatividad</span> hoy mismo
+            Potencia tu <span className="text-blue-400">emisora</span> hoy mismo
           </h2>
           <p className="text-xl text-blue-100/80 font-bold leading-relaxed">
             Accede a las mejores herramientas profesionales con un solo pago.
