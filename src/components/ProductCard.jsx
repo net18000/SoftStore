@@ -24,11 +24,11 @@ const ProductCard = ({ product, isPurchased, onBuy, onPreview }) => {
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 pointer-events-none" 
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-slate-200"><Package size={64} /></div>
+          <div className="w-full h-full flex items-center justify-center text-slate-200 pointer-events-none"><Package size={64} /></div>
         )}
         
         {hasOffer && (
-          <div className="absolute top-4 left-4 z-10 animate-in slide-in-from-left-4 duration-500">
+          <div className="absolute top-4 left-4 z-10 animate-in slide-in-from-left-4 duration-500 pointer-events-none">
             <div className="bg-red-600 text-white text-[10px] font-black px-4 py-2 rounded-full shadow-xl flex items-center gap-2 uppercase tracking-widest border border-white/20">
               <Zap size={14} className="fill-white" /> {Math.round((1 - (product.offerPrice / product.price)) * 100)}% DCTO
             </div>

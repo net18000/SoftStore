@@ -56,19 +56,15 @@ const StoreView = ({ products, banners, isAdmin, purchases, setCheckoutProduct, 
             <ShieldCheck size={16} className="text-blue-400" /> Sistema de Entrega Instantánea
           </div>
           <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-tight italic">
-            Potencia tu <span className="text-blue-400">creatividad</span> hoy mismo
+            Potencia tu <span className="text-blue-400">emisora</span> hoy mismo
           </h2>
           <p className="text-xl text-blue-100/80 font-bold leading-relaxed">
-            Accede a las mejores herramientas profesionales con un solo pago y soporte garantizado de por vida.
+            Accede a las mejores herramientas profesionales con un solo pago.
           </p>
           <div className="flex flex-wrap justify-center gap-10 pt-8 border-t border-white/10">
             <div className="text-center">
               <p className="text-4xl font-black text-white italic">100%</p>
               <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Seguro</p>
-            </div>
-            <div className="text-center">
-              <p className="text-4xl font-black text-white italic">24/7</p>
-              <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Soporte</p>
             </div>
             <div className="text-center">
               <p className="text-4xl font-black text-white italic">Auto</p>
