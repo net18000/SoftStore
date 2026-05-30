@@ -339,6 +339,12 @@ function App() {
     };
   }, [user]);
 
+  useEffect(() => {
+    if (user && isAdmin && (location.pathname === '/' || location.pathname === '/productos')) {
+      navigate('/admin/productos');
+    }
+  }, [user, isAdmin, location.pathname, navigate]);
+
   if (isBlocked) return <BlockedView />;
   if (isInitializing || isConfigLoading) return null;
 
