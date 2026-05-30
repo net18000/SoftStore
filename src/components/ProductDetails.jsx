@@ -92,7 +92,7 @@ const ProductDetails = ({ previewProduct, onBack, isAdmin, hasPurchased, setChec
 
             <div className="space-y-4">
               {isAdmin ? (
-                <button onClick={() => { setActiveTab('admin'); onBack(); }} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-6 rounded-2xl shadow-2xl shadow-blue-500/20 transition-all flex items-center justify-center gap-4 uppercase tracking-[0.2em] text-sm group">
+                <button onClick={() => { setEditingProduct(previewProduct); setActiveTab('admin'); onBack(); }} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-6 rounded-2xl shadow-2xl shadow-blue-500/20 transition-all flex items-center justify-center gap-4 uppercase tracking-[0.2em] text-sm group">
                   <Settings size={24} className="group-hover:rotate-12 transition-transform" /> Editar Programa
                 </button>
               ) : hasPurchased ? (
