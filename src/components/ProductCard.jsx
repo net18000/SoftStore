@@ -13,7 +13,7 @@ const ProductCard = ({ product, isPurchased, onBuy, onPreview }) => {
 
   return (
     <div className="group relative bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 transition-all hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary-500/10 border border-slate-100 dark:border-slate-800 flex flex-col h-full overflow-hidden">
-      <div className="product-card-glow"></div>
+      <div className="product-card-glow pointer-events-none"></div>
       
       <div className="relative aspect-square mb-6 rounded-3xl overflow-hidden bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 shadow-inner group-hover:scale-[1.02] transition-transform duration-500">
         {product.imageUrl ? (

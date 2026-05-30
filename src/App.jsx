@@ -95,6 +95,12 @@ function App() {
     window.history.pushState({ tab, productId: null, libraryProductId: null, adminTab }, '');
   };
 
+  const handleAdminPreview = (product) => {
+    setActiveTab('store');
+    setPreviewProduct(product);
+    window.history.pushState({ tab: 'store', productId: product.id, libraryProductId: null, adminTab }, '');
+  };
+
   const handleAdminTabChange = (tab) => {
     setAdminTab(tab);
     window.history.pushState({ tab: 'admin', productId: null, libraryProductId: null, adminTab: tab }, '');
@@ -497,7 +503,7 @@ function App() {
       <main className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 sm:py-8">
         {activeTab === 'store' && <StoreView products={products} banners={banners} isAdmin={isAdmin} purchases={purchases} setCheckoutProduct={setCheckoutProduct} setActiveTab={handleTabChange} setEditingProduct={setEditingProduct} isLoading={isLoading} previewProduct={previewProduct} setPreviewProduct={handlePreviewProduct} allReviews={allReviews} />}
         {activeTab === 'library' && <LibraryView products={products} purchases={purchases} setActiveTab={handleTabChange} showToast={showToast} allReviews={allReviews} user={user} selectedProduct={selectedLibraryProduct} setSelectedProduct={handleLibraryProductSelect} />}
-        {activeTab === 'admin' && <AdminPanel products={products} banners={banners} showToast={showToast} editingProduct={editingProduct} setEditingProduct={setEditingProduct} setPreviewProduct={handlePreviewProduct} setActiveTab={handleTabChange} user={user} adminTab={adminTab} setAdminTab={handleAdminTabChange} />}
+        {activeTab === 'admin' && <AdminPanel products={products} banners={banners} showToast={showToast} editingProduct={editingProduct} setEditingProduct={setEditingProduct} setPreviewProduct={handleAdminPreview} setActiveTab={handleTabChange} user={user} adminTab={adminTab} setAdminTab={handleAdminTabChange} />}
       </main>
       <CheckoutModal checkoutProduct={checkoutProduct} setCheckoutProduct={setCheckoutProduct} user={user} showToast={showToast} setActiveTab={handleTabChange} purchases={purchases} />
       <Toast toast={toast} />
