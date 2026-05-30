@@ -91,17 +91,18 @@ const ProductDetails = ({ previewProduct, onBack, isAdmin, hasPurchased, setChec
             </div>
 
             <div className="space-y-4">
-              {isAdmin ? (
-                <button onClick={() => { setEditingProduct(previewProduct); setActiveTab('admin'); onBack(); }} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-6 rounded-2xl shadow-2xl shadow-blue-500/20 transition-all flex items-center justify-center gap-4 uppercase tracking-[0.2em] text-sm group">
-                  <Settings size={24} className="group-hover:rotate-12 transition-transform" /> Editar Programa
-                </button>
-              ) : hasPurchased ? (
+              {hasPurchased ? (
                 <button onClick={() => setActiveTab('library')} className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-6 rounded-2xl shadow-2xl shadow-emerald-500/20 transition-all flex items-center justify-center gap-4 uppercase tracking-[0.2em] text-sm group">
                   <Download size={24} className="group-hover:translate-y-1 transition-transform" /> Ir a mis programas
                 </button>
               ) : (
                 <button onClick={() => setCheckoutProduct(previewProduct)} className="w-full bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black py-6 rounded-2xl shadow-2xl shadow-primary-500/10 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-4 uppercase tracking-[0.2em] text-sm group">
                   <ShoppingCart size={24} className="group-hover:rotate-12 transition-transform" /> Adquirir Ahora
+                </button>
+              )}
+              {isAdmin && (
+                <button onClick={() => { setEditingProduct(previewProduct); setActiveTab('admin'); onBack(); }} className="w-full bg-blue-50 dark:bg-blue-900/10 hover:bg-blue-600 hover:text-white text-blue-600 font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-4 uppercase tracking-[0.2em] text-[10px] group border-2 border-dashed border-blue-200 dark:border-blue-800">
+                  <Settings size={18} className="group-hover:rotate-12 transition-transform" /> Modo Administrador: Editar Programa
                 </button>
               )}
               <p className="text-[10px] text-center text-slate-400 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
