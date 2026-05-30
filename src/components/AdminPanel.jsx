@@ -872,6 +872,22 @@ const AdminPanel = ({ products, banners, showToast, editingProduct, setEditingPr
                     </div>
                   </div>
                 </div>
+
+                {formData.hasOffer && (
+                  <div className="space-y-4 p-6 bg-red-50/50 dark:bg-red-900/10 rounded-3xl border border-red-100 dark:border-red-900/30 animate-in fade-in slide-in-from-top-4 duration-300">
+                    <label className="text-sm font-black uppercase tracking-widest text-red-600">La oferta vence el:</label>
+                    <input 
+                      required={formData.hasOffer} 
+                      type="datetime-local" 
+                      value={formData.offerExpiresAt} 
+                      onChange={e=>setFormData({...formData, offerExpiresAt: e.target.value})} 
+                      className="w-full h-[76px] px-6 py-4 bg-white dark:bg-slate-900 border-2 border-red-500 rounded-2xl outline-none transition-all text-xl font-black text-red-600 shadow-sm"
+                    />
+                    <p className="text-[10px] font-black text-red-400 uppercase tracking-widest flex items-center gap-2">
+                      <Clock size={14} /> El sistema desactivará la oferta automáticamente al llegar a esta fecha.
+                    </p>
+                  </div>
+                )}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-end">
                   <div className="space-y-2">
                     <label className="text-sm font-black uppercase tracking-widest text-slate-400">Calificación (1-5)</label>
