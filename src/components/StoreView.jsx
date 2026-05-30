@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Monitor, Package, Star, ArrowRight, Clock, 
   ChevronLeft, ChevronRight, Search, Zap, 
-  CheckCircle, ShieldCheck, Download, AlertCircle, ShoppingCart
+  CheckCircle, ShieldCheck, Download, AlertCircle, ShoppingCart, Settings
 } from 'lucide-react';
 import { formatToPeruDate } from '../utils';
 
@@ -234,7 +234,11 @@ const StoreView = ({ products, banners, isAdmin, purchases, setCheckoutProduct, 
               </div>
 
               <div className="space-y-4">
-                {hasPurchased ? (
+                {isAdmin ? (
+                  <button onClick={() => { setEditingProduct(previewProduct); setActiveTab('admin'); setPreviewProduct(null); }} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-6 rounded-2xl shadow-2xl shadow-blue-500/20 transition-all flex items-center justify-center gap-4 uppercase tracking-[0.2em] text-sm group">
+                    <Settings size={24} className="group-hover:rotate-12 transition-transform" /> Editar Programa
+                  </button>
+                ) : hasPurchased ? (
                   <button onClick={() => setActiveTab('library')} className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-6 rounded-2xl shadow-2xl shadow-emerald-500/20 transition-all flex items-center justify-center gap-4 uppercase tracking-[0.2em] text-sm group">
                     <Download size={24} className="group-hover:translate-y-1 transition-transform" /> Ir a mis programas
                   </button>
