@@ -45,7 +45,71 @@ function App() {
   const [checkoutProduct, setCheckoutProduct] = useState(null);
   const [editingProduct, setEditingProduct] = useState(null);
   const [previewProduct, setPreviewProduct] = useState(null);
+  const [selectedLibraryProduct, setSelectedLibraryProduct] = useState(null);
   const isAdmin = checkIsAdmin(user);
+
+  // Manejo de navegación con el botón de retroceso del navegador
+  useEffect(() => {
+    const handlePopState = (event) => {
+      if (event.state) {
+        setActiveTab(event.state.tab || 'store');
+        
+        // Vista de tienda
+        if (event.state.productId) {
+          const product = products.find(p => p.id === event.state.productId);
+          if (product) setPreviewProduct(product);
+        } else {
+          setPreviewProduct(null);
+        }
+
+        // Vista de biblioteca
+        if (event.state.libraryProductId) {
+          const product = products.find(p => p.id === event.state.libraryProductId);
+          if (product) setSelectedLibraryProduct(product);
+        } else {
+          setSelectedLibraryProduct(null);
+        }
+      } else {
+        setActiveTab('store');
+        setPreviewProduct(null);
+        setSelectedLibraryProduct(null);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    
+    // Estado inicial
+    if (!window.history.state) {
+      window.history.replaceState({ tab: 'store', productId: null, libraryProductId: null }, '');
+    }
+
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [products]);
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setPreviewProduct(null);
+    setSelectedLibraryProduct(null);
+    window.history.pushState({ tab, productId: null, libraryProductId: null }, '');
+  };
+
+  const handlePreviewProduct = (product) => {
+    setPreviewProduct(product);
+    if (product) {
+      window.history.pushState({ tab: activeTab, productId: product.id, libraryProductId: null }, '');
+    } else {
+      window.history.pushState({ tab: activeTab, productId: null, libraryProductId: null }, '');
+    }
+  };
+
+  const handleLibraryProductSelect = (product) => {
+    setSelectedLibraryProduct(product);
+    if (product) {
+      window.history.pushState({ tab: activeTab, productId: null, libraryProductId: product.id }, '');
+    } else {
+      window.history.pushState({ tab: activeTab, productId: null, libraryProductId: null }, '');
+    }
+  };
 
   useEffect(() => {
     const configRef = doc(db, 'artifacts', appId, 'public', 'data', 'gatekeeper', 'config');
@@ -386,20 +450,20 @@ function App() {
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">
             {!isAdmin && (
-              <button onClick={() => setActiveTab('store')} className={`px-4 py-2.5 rounded-2xl text-sm font-black transition-all flex items-center gap-2 ${activeTab === 'store' ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/20' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
+              <button onClick={() => handleTabChange('store')} className={`px-4 py-2.5 rounded-2xl text-sm font-black transition-all flex items-center gap-2 ${activeTab === 'store' ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/20' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
                 <Monitor size={18} />
                 <span className="hidden sm:inline">Tienda</span>
               </button>
             )}
             {!isAdmin && (
-              <button onClick={() => setActiveTab('library')} className={`px-4 py-2.5 rounded-2xl text-sm font-black flex items-center gap-2 transition-all ${activeTab === 'library' ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/20' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
+              <button onClick={() => handleTabChange('library')} className={`px-4 py-2.5 rounded-2xl text-sm font-black flex items-center gap-2 transition-all ${activeTab === 'library' ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/20' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
                 <HardDrive size={18} />
                 <span className="hidden sm:inline">Mis Programas</span>
                 {purchases.length > 0 && <span className="bg-white text-primary-600 text-[10px] px-1.5 py-0.5 rounded-full min-w-[18px] text-center font-black">{purchases.length}</span>}
               </button>
             )}
             {isAdmin && (
-              <button onClick={() => setActiveTab('admin')} className={`px-4 py-2.5 rounded-2xl text-sm font-black flex items-center gap-2 transition-all ${activeTab === 'admin' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-xl' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
+              <button onClick={() => handleTabChange('admin')} className={`px-4 py-2.5 rounded-2xl text-sm font-black flex items-center gap-2 transition-all ${activeTab === 'admin' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-xl' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 shadow-sm'}`}>
                 <Settings size={18} />
                 <span className="hidden sm:inline">Admin</span>
               </button>
@@ -424,11 +488,11 @@ function App() {
       )}
 
       <main className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 sm:py-8">
-        {activeTab === 'store' && <StoreView products={products} banners={banners} isAdmin={isAdmin} purchases={purchases} setCheckoutProduct={setCheckoutProduct} setActiveTab={setActiveTab} setEditingProduct={setEditingProduct} isLoading={isLoading} previewProduct={previewProduct} setPreviewProduct={setPreviewProduct} allReviews={allReviews} />}
-        {activeTab === 'library' && <LibraryView products={products} purchases={purchases} setActiveTab={setActiveTab} showToast={showToast} allReviews={allReviews} user={user} />}
-        {activeTab === 'admin' && <AdminPanel products={products} banners={banners} showToast={showToast} editingProduct={editingProduct} setEditingProduct={setEditingProduct} setPreviewProduct={setPreviewProduct} setActiveTab={setActiveTab} user={user} />}
+        {activeTab === 'store' && <StoreView products={products} banners={banners} isAdmin={isAdmin} purchases={purchases} setCheckoutProduct={setCheckoutProduct} setActiveTab={handleTabChange} setEditingProduct={setEditingProduct} isLoading={isLoading} previewProduct={previewProduct} setPreviewProduct={handlePreviewProduct} allReviews={allReviews} />}
+        {activeTab === 'library' && <LibraryView products={products} purchases={purchases} setActiveTab={handleTabChange} showToast={showToast} allReviews={allReviews} user={user} selectedProduct={selectedLibraryProduct} setSelectedProduct={handleLibraryProductSelect} />}
+        {activeTab === 'admin' && <AdminPanel products={products} banners={banners} showToast={showToast} editingProduct={editingProduct} setEditingProduct={setEditingProduct} setPreviewProduct={handlePreviewProduct} setActiveTab={handleTabChange} user={user} />}
       </main>
-      <CheckoutModal checkoutProduct={checkoutProduct} setCheckoutProduct={setCheckoutProduct} user={user} showToast={showToast} setActiveTab={setActiveTab} purchases={purchases} />
+      <CheckoutModal checkoutProduct={checkoutProduct} setCheckoutProduct={setCheckoutProduct} user={user} showToast={showToast} setActiveTab={handleTabChange} purchases={purchases} />
       <Toast toast={toast} />
     </div>
   );

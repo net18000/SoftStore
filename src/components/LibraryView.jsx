@@ -8,8 +8,7 @@ import { collection, addDoc, doc, updateDoc, getDocs, query, where } from 'fireb
 import { db } from '../utils';
 import { appId } from '../config';
 
-const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews, user }) => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
+const LibraryView = ({ products, purchases, setActiveTab, showToast, allReviews, user, selectedProduct, setSelectedProduct }) => {
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
